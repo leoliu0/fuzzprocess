@@ -1,9 +1,0 @@
-LICENSE
-README.md
-fuzzprocess
-setup.py
-fuzzprocess.egg-info/PKG-INFO
-fuzzprocess.egg-info/SOURCES.txt
-fuzzprocess.egg-info/dependency_links.txt
-fuzzprocess.egg-info/requires.txt
-fuzzprocess.egg-info/top_level.txt

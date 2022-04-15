@@ -1,0 +1,3 @@
+faiss-gpu
+loguru
+sentence_transformers

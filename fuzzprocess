@@ -13,7 +13,7 @@ parser.add_argument("file2", type=str, help="input file2")
 parser.add_argument("-k", type=int, required=False, help="Top k to search", default=10)
 parser.add_argument("-d", type=int, required=False, help="minimum distance", default=10)
 parser.add_argument(
-    "-o", type=str, required=False, help="Top k to search", default="__result.csv"
+    "-o", type=str, required=False, help="output file name", default="__fuzz_result__.csv"
 )
 args = parser.parse_args()
 

@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fuzzprocess"
+version = "0.0.1"
+description = "Fuzzy Matching Strings (top k)"
+authors = [
+    { name = "Leo Liu", email = "leo.liu@unsw.edu.au" },
+]
+dependencies=[
+'tqdm',
+'faiss-gpu',
+'loguru',
+'sentence_transformers'
+]
+
+[project.scripts]
+fuzzprocess = "fuzzprocess:main"

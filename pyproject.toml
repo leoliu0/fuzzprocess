@@ -7,11 +7,11 @@ name = "fuzzprocess"
 version = "0.0.1"
 description = "Fuzzy Matching Strings (top k)"
 authors = [
-    { name = "Leo Liu", email = "leo.liu@unsw.edu.au" },
+    { name = "Leo Liu", email = "leo.liu@uts.edu.au" },
 ]
 dependencies=[
 'tqdm',
-'faiss-gpu',
+'faiss-cpu',
 'loguru',
 'sentence_transformers'
 ]

@@ -1,4 +1,4 @@
-#!/bin/python3.9
+#!/bin/python
 import argparse
 import csv
 import time
@@ -13,14 +13,17 @@ parser = argparse.ArgumentParser()
 parser.add_argument("file1", type=str, help="input file1")
 parser.add_argument("file2", type=str, help="input file2")
 parser.add_argument("-k", type=int, required=False, help="Top k to search", default=10)
-parser.add_argument("-d", type=int, required=False, help="minimum distance 0-100", default=20)
-parser.add_argument("-b", action='store_true', help='Use the best model')
+parser.add_argument(
+    "-d", type=int, required=False, help="minimum distance 0-100", default=20
+)
+parser.add_argument("-b", action="store_true", help="Use the best model")
 parser.add_argument(
     "-o", type=str, required=False, help="output file name", default="__fuzz_result.csv"
 )
 args = parser.parse_args()
 
-distance = args.d/100
+distance = args.d / 100
+
 
 def read_str(file):
     with open(file) as f:
@@ -60,8 +63,8 @@ def main():
         writer = csv.writer(f)
         writer.writerow(["s1", "s2", "n", "cos"])
 
-        if len(e1)>10000:
-            e1 = np.array_split(e1,100)
+        if len(e1) > 10000:
+            e1 = np.array_split(e1, 100)
         else:
             e1 = [e1]
 
@@ -71,7 +74,9 @@ def main():
             for i, (a, di) in enumerate(zip(I, D)):
                 for n, (j, dj) in enumerate(zip(a, di)):
                     if j >= 0 and dj > distance:
-                        writer.writerow([s1[i+counter], s2[j], n + 1, round(dj*100,2)])
+                        writer.writerow(
+                            [s1[i + counter], s2[j], n + 1, round(dj * 100, 2)]
+                        )
             counter += len(sub_e1)
 
 

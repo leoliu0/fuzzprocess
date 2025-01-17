@@ -17,6 +17,8 @@ parser.add_argument(
     "-d", type=int, required=False, help="minimum distance 0-100", default=20
 )
 parser.add_argument("-b", action="store_true", help="Use the best model")
+parser.add_argument("-m", type=str, help="Pass your model name")
+parser.add_argument("--cpu", action="store_true", help="Force use CPU")
 parser.add_argument(
     "-o", type=str, required=False, help="output file name", default="__fuzz_result.csv"
 )
@@ -27,28 +29,36 @@ distance = args.d / 100
 
 def read_str(file):
     with open(file) as f:
-        return [x.strip() for x in f.readlines() if x.strip()]
+        return [x.replace('"', "").strip() for x in f.readlines() if x.strip()]
+
+
+def select_model():
+    if args.m:
+        name = args.m
+    elif args.b:
+        name = "dunzhang/stella_en_400M_v5"
+    else:
+        name = "sentence-transformers/all-MiniLM-L6-v2"
+    logger.info(f"Loading Model {name}")
+
+    if args.cpu:
+        device = "mps"
+    else:
+        device = "cuda"
+    return SentenceTransformer(name, trust_remote_code=True, device=device)
 
 
 def main():
-    print(f"Searching {args.k} and minimum distance is {distance}")
+    print(f"Searching {args.k} and minimum distance is {distance*100}")
     start = time.time()
     s1 = read_str(args.file1)
     s2 = read_str(args.file2)
 
-    logger.info("Loading Model")
-    if args.b:
-        name = "sentence-transformers/all-mpnet-base-v2"
-        model = SentenceTransformer(name)
-    else:
-        name = "sentence-transformers/all-MiniLM-L6-v2"
-        model = SentenceTransformer(name)
-    print(name)
-
+    model = select_model()
     logger.info("Encoding s1")
-    e1 = model.encode(s1, batch_size=1000)
+    e1 = model.encode(s1, batch_size=100, show_progress_bar=True)
     logger.info("Encoding s2")
-    e2 = model.encode(s2, batch_size=1000)
+    e2 = model.encode(s2, batch_size=100, show_progress_bar=True)
 
     index = faiss.IndexFlatIP(model[1].word_embedding_dimension)
 
@@ -63,7 +73,9 @@ def main():
         writer = csv.writer(f)
         writer.writerow(["s1", "s2", "n", "cos"])
 
-        if len(e1) > 10000:
+        if len(e1) > 10_0000 and len(e2) > 10_0000:
+            e1 = np.array_split(e1, 10000)
+        elif len(e1) > 10000:
             e1 = np.array_split(e1, 100)
         else:
             e1 = [e1]

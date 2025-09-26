@@ -1,20 +1,36 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "fuzzprocess"
+name = "fuzztools"
 version = "0.0.1"
-description = "Fuzzy Matching Strings (top k)"
+description = "Fuzzy Matching CLI Tools (fuzzprocess and fuzzpost)"
 authors = [
     { name = "Leo Liu", email = "leo.liu@uts.edu.au" },
 ]
-dependencies=[
-'tqdm',
-'faiss-cpu',
-'loguru',
-'sentence_transformers'
+dependencies = [
+    'polars',
+    'tqdm',
+    'faiss-cpu',
+    'loguru',
 ]
+readme = "README.md"
 
 [project.scripts]
-fuzzprocess = "fuzzprocess:main"
+fuzzprocess = "fuzztools.fuzzprocess:main"
+fuzzpost = "fuzztools.fuzzpost:main"
+embed = "fuzztools.embed:main"
+
+[tool.setuptools]
+# Explicitly list the top-level package found in the 'src' directory
+packages = ["fuzztools"]
+
+[tool.setuptools.package-dir]
+# Map the project root to the 'src' directory for package discovery
+"" = "src"
+
+# The '[tool.setuptools.packages.find]' section is no longer needed
+# because we are explicitly listing the packages.
+# [tool.setuptools.packages.find]
+# where = ["src"]

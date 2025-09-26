@@ -1,0 +1,10 @@
+s1	s2	n	cos
+HP	Hewlett-Packard Company	1	92.02
+HP	Facebook	2	84.63
+HP	Alphabet Inc	3	82.23
+Google	Facebook	1	91.54
+Google	Alphabet Inc	2	90.29
+Google	Hewlett-Packard Company	3	85.98
+Meta	Facebook	1	85.57
+Meta	Alphabet Inc	2	79.28
+Meta	Hewlett-Packard Company	3	78.09
